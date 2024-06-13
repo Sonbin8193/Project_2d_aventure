@@ -7,21 +7,22 @@ public class PlayerController : MonoBehaviour
 {
     public InputAction moveLeft;
     public InputAction moveAction;
+    Rigidbody2D rigidbody;
+    Vector2 move;
     // Start is called before the first frame update
     void Start()
     {
         //QualitySettings.vSyncCount = 0;
         //Application.targetFrameRate = 24;
-        //moveLeft.Enable();
         moveAction.Enable();
+        rigidbody = GetComponent<Rigidbody2D>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        Vector2 move = moveAction.ReadValue<Vector2>();
-        Vector2 pos = (Vector2)transform.position + move * 3f*Time.deltaTime;
-        transform.position = pos;
+        move = moveAction.ReadValue<Vector2>();
+        
         //float horizontal = 0.0f;
         //float vertical = 0f;
         //if (moveLeft.IsPressed())
@@ -44,5 +45,9 @@ public class PlayerController : MonoBehaviour
         //pos.x += 0.1f * horizontal;
         //pos.y += 0.1f * vertical;
         //transform.position = pos;
+    }
+    private void FixedUpdate()
+    {
+        rigidbody.MovePosition(rigidbody.position + move * 3f * Time.fixedDeltaTime);
     }
 }
