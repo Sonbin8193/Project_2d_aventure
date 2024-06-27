@@ -7,7 +7,16 @@ public class PlayerController : MonoBehaviour
 {
     public InputAction moveLeft;
     public InputAction moveAction;
-    Rigidbody2D rigidbody;
+    Rigidbody2D rb;
+    public int maxHealth = 5;
+    public float speed = 3f;
+    public int health { get { return currentHealth; } }
+    private int currentHealth;
+
+    public float timeInvicible = 2f;
+    private bool isInvicible;
+    private float damageCooldown;
+
     Vector2 move;
     // Start is called before the first frame update
     void Start()
@@ -15,14 +24,15 @@ public class PlayerController : MonoBehaviour
         //QualitySettings.vSyncCount = 0;
         //Application.targetFrameRate = 24;
         moveAction.Enable();
-        rigidbody = GetComponent<Rigidbody2D>();
+        rb = GetComponent<Rigidbody2D>();
+        currentHealth = maxHealth;
     }
 
     // Update is called once per frame
     void Update()
     {
         move = moveAction.ReadValue<Vector2>();
-        
+
         //float horizontal = 0.0f;
         //float vertical = 0f;
         //if (moveLeft.IsPressed())
@@ -45,9 +55,31 @@ public class PlayerController : MonoBehaviour
         //pos.x += 0.1f * horizontal;
         //pos.y += 0.1f * vertical;
         //transform.position = pos;
+        if (isInvicible)
+        {
+            damageCooldown -= Time.deltaTime;
+            if (damageCooldown < 0)
+            {
+                isInvicible = false;
+            }
+        }
     }
     private void FixedUpdate()
     {
-        rigidbody.MovePosition(rigidbody.position + move * 3f * Time.fixedDeltaTime);
+        rb.MovePosition(rb.position + move * speed * Time.fixedDeltaTime);
+    }
+    public void ChangeHealth(int amount)
+    {
+        if (amount<0)
+        {
+            if (isInvicible)
+            {
+                return;
+            }
+            isInvicible = true;
+            damageCooldown = timeInvicible;
+        }
+        currentHealth = Mathf.Clamp(currentHealth + amount, 0, maxHealth);
+        Debug.Log(currentHealth);
     }
 }

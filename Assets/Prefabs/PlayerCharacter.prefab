@@ -165,6 +165,8 @@ MonoBehaviour:
       m_Action: Move
       m_Flags: 8
     m_Flags: 0
+  maxHealth: 5
+  speed: 5
 --- !u!61 &565310081938604650
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -234,6 +236,6 @@ Rigidbody2D:
     serializedVersion: 2
     m_Bits: 0
   m_Interpolate: 0
-  m_SleepingMode: 1
+  m_SleepingMode: 0
   m_CollisionDetection: 0
   m_Constraints: 4
