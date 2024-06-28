@@ -18,16 +18,11 @@ public class UIHandler : MonoBehaviour
     {
         UIDocument document = GetComponent<UIDocument>();
         m_healthBar = document.rootVisualElement.Q<VisualElement>("HealthBar");
-        HealthValue(0.8f);
-        SetHealth();
+        SetHealth(1f);
     }
-    public void HealthValue(float health)
+    public void SetHealth(float percentage)
     {
-        this.currentHealth = health;
-    }
-    private void SetHealth()
-    {
-        m_healthBar.style.width = Length.Percent(currentHealth * 100f);
+        m_healthBar.style.width = Length.Percent(100 * percentage);
     }
 }
 
