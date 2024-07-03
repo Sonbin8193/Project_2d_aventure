@@ -7,6 +7,9 @@ public class PlayerController : MonoBehaviour
 {
     public InputAction moveLeft;
     public InputAction moveAction;
+
+    Animator animator;
+    Vector2 moveDirection = new Vector2 (1f, 0f);
     Rigidbody2D rb;
     public int maxHealth = 5;
     public float speed = 3f;
@@ -26,13 +29,20 @@ public class PlayerController : MonoBehaviour
         moveAction.Enable();
         rb = GetComponent<Rigidbody2D>();
         currentHealth = maxHealth;
+        animator = GetComponent<Animator>();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        move = moveAction.ReadValue<Vector2>();
 
+    void Update()
+    {         
+        if (!Mathf.Approximately(move.x, 0.0f) || !Mathf.Approximately(move.y, 0.0f))
+        {
+            moveDirection.Set (move.x, move.y);
+            moveDirection.Normalize ();
+        }
+        animator.SetFloat("Look X", moveDirection.x);
+        animator.SetFloat("Look Y", moveDirection.y);
+        animator.SetFloat("Speed", move.magnitude);
         //float horizontal = 0.0f;
         //float vertical = 0f;
         //if (moveLeft.IsPressed())
@@ -66,6 +76,7 @@ public class PlayerController : MonoBehaviour
     }
     private void FixedUpdate()
     {
+        move = moveAction.ReadValue<Vector2>();
         rb.MovePosition(rb.position + move * speed * Time.fixedDeltaTime);
     }
     public void ChangeHealth(int amount)
@@ -79,6 +90,7 @@ public class PlayerController : MonoBehaviour
             isInvicible = true;
             damageCooldown = timeInvicible;
         }
+        animator.SetTrigger("Hit");
         currentHealth = Mathf.Clamp(currentHealth + amount, 0, maxHealth);
         UIHandler.instance.SetHealth((float)currentHealth / maxHealth);
     }
