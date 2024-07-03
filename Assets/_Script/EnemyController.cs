@@ -6,6 +6,7 @@ public class EnemyController : MonoBehaviour
 {
     public bool vertical;
 
+    Animator animator;
     Rigidbody2D rb;
     float speed = 2f;
     float changeTime = 3f;
@@ -16,6 +17,7 @@ public class EnemyController : MonoBehaviour
     {
         timer = changeTime;
         rb = GetComponent<Rigidbody2D>();
+        animator = GetComponent<Animator>();
     }
     private void Update()
     {
@@ -32,10 +34,14 @@ public class EnemyController : MonoBehaviour
         if (vertical)
         {
             rb.MovePosition(rb.position + Vector2.up * Time.fixedDeltaTime * speed * direction);
+            animator.SetFloat("Move X", 0);
+            animator.SetFloat("Move Y", direction);
         }
         else
         {
-            rb.MovePosition(rb.position + Vector2.left * Time.fixedDeltaTime * speed * direction);
+            rb.MovePosition(rb.position + Vector2.right * Time.fixedDeltaTime * speed * direction);
+            animator.SetFloat("Move X", direction);
+            animator.SetFloat("Move Y", 0);
         }
     }
     private void OnCollisionEnter2D(Collision2D collision)
