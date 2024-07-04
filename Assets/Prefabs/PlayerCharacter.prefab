@@ -166,6 +166,24 @@ MonoBehaviour:
       m_Action: Move
       m_Flags: 8
     m_Flags: 0
+  projectilePrefabs: {fileID: 3570438081884290396, guid: 194862fa302303b419130be9caf3fcef, type: 3}
+  launchAction:
+    m_Name: Launch
+    m_Type: 1
+    m_ExpectedControlType: Button
+    m_Id: 1768ea99-c4c8-4b84-820a-8f2e0dae4172
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings:
+    - m_Name: 
+      m_Id: bc55ddf0-c931-43a0-81b0-7a045d8c95d3
+      m_Path: <Keyboard>/space
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Launch
+      m_Flags: 0
+    m_Flags: 0
   maxHealth: 5
   speed: 5
   timeInvicible: 2

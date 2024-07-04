@@ -7,16 +7,18 @@ public class PlayerController : MonoBehaviour
 {
     public InputAction moveLeft;
     public InputAction moveAction;
+    public GameObject projectilePrefabs;
+    public InputAction launchAction;
+    public int maxHealth = 5;
+    public float speed = 3f;
+    public float timeInvicible = 2f;
+    public int health { get { return currentHealth; } }
 
     Animator animator;
     Vector2 moveDirection = new Vector2 (1f, 0f);
     Rigidbody2D rb;
-    public int maxHealth = 5;
-    public float speed = 3f;
-    public int health { get { return currentHealth; } }
+    
     private int currentHealth;
-
-    public float timeInvicible = 2f;
     private bool isInvicible;
     private float damageCooldown;
 
@@ -30,6 +32,8 @@ public class PlayerController : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         currentHealth = maxHealth;
         animator = GetComponent<Animator>();
+        launchAction.Enable();
+        launchAction.performed += Launch;
     }
 
 
@@ -93,5 +97,12 @@ public class PlayerController : MonoBehaviour
         animator.SetTrigger("Hit");
         currentHealth = Mathf.Clamp(currentHealth + amount, 0, maxHealth);
         UIHandler.instance.SetHealth((float)currentHealth / maxHealth);
+    }
+
+    private void Launch(InputAction.CallbackContext context)
+    {
+        GameObject projectileObject = Instantiate(projectilePrefabs, rb.position + Vector2.up * 0.5f, Quaternion.identity);
+        projectileObject.GetComponent<Projectile>().Launch(moveDirection, 300);
+        animator.SetTrigger("Launch");
     }
 }
